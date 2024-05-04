@@ -24,7 +24,7 @@ public class Response {
         if (path != null) {
             json.append(",\"path\":[");
             for (int i = 0; i < path.size(); i++) {
-                json.append("\"").append(path.get(i)).append("\"");
+                json.append("\"").append(path.get(i).toUpperCase()).append("\"");
                 if (i < path.size() - 1) {
                     json.append(",");
                 }
