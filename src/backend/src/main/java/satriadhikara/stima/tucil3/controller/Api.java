@@ -1,5 +1,6 @@
 package satriadhikara.stima.tucil3.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,10 +12,11 @@ import satriadhikara.stima.tucil3.model.InputWord;
 import satriadhikara.stima.tucil3.model.Response;
 import org.springframework.http.ResponseEntity;
 
+@CrossOrigin
 @RestController
 public class Api {
 
-    @GetMapping("/api")
+    @GetMapping(value = "/api", produces = "application/json")
     public ResponseEntity<String> api(
             @RequestParam(value = "StartWord") String startWord,
             @RequestParam(value = "EndWord") String endWord,
