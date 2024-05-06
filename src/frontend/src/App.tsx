@@ -13,6 +13,7 @@ type response = {
   message: string,
   path?: string[],
   executionTime?: number
+  nodeVisited?: number
 }
 
 const formSchema = z.object({
@@ -35,8 +36,7 @@ function App() {
   });
 
   const handleReset = () => {
-    form.reset()
-    setData(null)
+    setData(null);
   }
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
@@ -44,12 +44,12 @@ function App() {
     toast({
       title: "Solving...",
       description: "Please wait a moment",
-      duration: 999999999999 * 9,
+      duration: 999999999999 * 9, // maunya sih selamanya
     })
     fetch(`http://localhost:8080/api?StartWord=${values.startWord}&EndWord=${values.endWord}&Method=${values.algorithm}`)
       .then(response => response.json())
       .then(data => {
-        console.log(data)
+        // console.log(data)
         if (data.path === undefined) {
           toast({
             title: "Error",
@@ -83,8 +83,9 @@ function App() {
           <h1 className="text-4xl font-bold">Word Ladder Solver</h1>
           <p className="text-sm mt-2 mb-6">made by <a href="https://github.com/satriadhikara" target="_blank"
                                                       className=" cursor-pointer hover:underline transition">@Satriadhikara</a> using <a
-            href=" https://github.com/dwyl/english-words?tab=readme-ov-file" target="_blank"
-            className="hover:underline cursor-pointer">@dwyl
+            href="https://docs.oracle.com/javase/tutorial/collections/interfaces/examples/dictionary.txt"
+            target="_blank"
+            className="hover:underline cursor-pointer">Oracle
             dictionary</a></p>
 
         </div>
@@ -148,6 +149,7 @@ function App() {
             ))}
           </div>
           <p className="text-lg mt-7">{data.path ? data.path.length - 1 : null} path in {data.executionTime} ms</p>
+          <p>{data.nodeVisited} nodes visited</p>
           <p className="text-lg mt-2 hover:underline cursor-pointer" onClick={handleReset}>Go back</p>
 
         </>)}
