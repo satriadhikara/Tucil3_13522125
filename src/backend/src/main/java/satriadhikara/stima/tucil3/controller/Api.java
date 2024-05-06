@@ -24,29 +24,29 @@ public class Api {
         startWord = startWord.toLowerCase();
         endWord = endWord.toLowerCase();
         if (!Dictionary.isWordExist(startWord)) {
-            return new Response("StartWord is not a valid word", null, -1).json();
+            return new Response("StartWord is not a valid word", null, -1, -1).json();
         }
         if (!Dictionary.isWordExist(endWord)) {
-            return new Response("EndWord is not a valid word", null, -1).json();
+            return new Response("EndWord is not a valid word", null, -1, -1).json();
         }
         if (!method.equals("AStar") && !method.equals("UCS") && !method.equals("GBFS")) {
-            return new Response("Method is not valid", null, -1).json();
+            return new Response("Method is not valid", null, -1, -1).json();
         }
         if (startWord.length() != endWord.length()) {
-            return new Response("Words length is not the same", null, -1).json();
+            return new Response("Words length is not the same", null, -1, -1).json();
         }
 
         InputWord input = new InputWord(startWord, endWord);
-        GreedyBestFirstSearch gbfs = new GreedyBestFirstSearch();
-        AStar aStar = new AStar();
-        UCS ucs = new UCS();
         Response response;
         long startTime = System.currentTimeMillis();
         if (method.equals("AStar")) {
+            AStar aStar = new AStar();
             response = aStar.search(input);
         } else if (method.equals("UCS")) {
+            UCS ucs = new UCS();
             response = ucs.search(input);
         } else {
+            GreedyBestFirstSearch gbfs = new GreedyBestFirstSearch();
             response = gbfs.search(input);
         }
         long endTime = System.currentTimeMillis();

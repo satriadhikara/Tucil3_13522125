@@ -11,11 +11,13 @@ public class Response {
     private final List<String> path;
     @Setter
     private long executionTime;
+    private int nodeVisited;
 
-    public Response(String message, List<String> path, int executionTime) {
+    public Response(String message, List<String> path, int executionTime, int nodeVisited) {
         this.message = message;
         this.path = path;
         this.executionTime = executionTime;
+        this.nodeVisited = nodeVisited;
     }
 
     public ResponseEntity<String> json() {
@@ -31,6 +33,7 @@ public class Response {
             }
             json.append("],");
             json.append("\"executionTime\":").append(executionTime);
+            json.append(",\"nodeVisited\":").append(nodeVisited);
         }
         json.append("}");
 
