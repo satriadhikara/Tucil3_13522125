@@ -51,11 +51,20 @@ function App() {
       .then(data => {
         // console.log(data)
         if (data.path === undefined) {
-          toast({
-            title: "Error",
-            description: data.message,
-            variant: "destructive"
-          })
+          if (data.nodeVisited !== -1) {
+            console.log(data);
+            toast({
+              title: "Error",
+              description: data.message + " (Node visited: " + data.nodeVisited + ", Execution time: " + data.executionTime + "ms)",
+              variant: "destructive"
+            })
+          } else {
+            toast({
+              title: "Error",
+              description: data.message,
+              variant: "destructive"
+            })
+          }
         } else {
           setData(data)
           toast({

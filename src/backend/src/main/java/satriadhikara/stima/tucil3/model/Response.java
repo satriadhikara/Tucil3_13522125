@@ -12,12 +12,15 @@ public class Response {
     @Setter
     private long executionTime;
     private int nodeVisited;
+    @Setter
+    private long memoryUsed;
 
-    public Response(String message, List<String> path, int executionTime, int nodeVisited) {
+    public Response(String message, List<String> path, int executionTime, int nodeVisited, long memoryUsed) {
         this.message = message;
         this.path = path;
         this.executionTime = executionTime;
         this.nodeVisited = nodeVisited;
+        this.memoryUsed = memoryUsed;
     }
 
     public ResponseEntity<String> json() {
@@ -32,9 +35,10 @@ public class Response {
                 }
             }
             json.append("],");
-            json.append("\"executionTime\":").append(executionTime);
-            json.append(",\"nodeVisited\":").append(nodeVisited);
+            json.append(",\"memoryUsed (KB)\":").append(memoryUsed);
         }
+        json.append(",\"executionTime\":").append(executionTime);
+        json.append(",\"nodeVisited\":").append(nodeVisited);
         json.append("}");
 
         if (path == null) {

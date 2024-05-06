@@ -26,7 +26,7 @@ public class GreedyBestFirstSearch extends Algorithm {
             totalNodesVisited++;
 
             if (current.word().equals(targetWord)) {
-                return new Response("Path found", constructPath(current), 0, totalNodesVisited);
+                return new Response("Path found", constructPath(current), 0, totalNodesVisited, 0);
             }
 
             Set<String> neighbors = Dictionary.getWordNeighbors(current.word(), visited);
@@ -39,6 +39,6 @@ public class GreedyBestFirstSearch extends Algorithm {
             }
         }
 
-        return new Response("No path found", null, -1, totalNodesVisited);
+        return new Response("No path found", null, 0, totalNodesVisited, 0);
     }
 }

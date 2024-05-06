@@ -36,7 +36,7 @@ public class UCS extends Algorithm {
                     current = current.parent();
                 }
                 Collections.reverse(path);
-                return new Response("Path found", path, cost, totalNodesVisited);
+                return new Response("Path found", path, cost, totalNodesVisited, 0);
             }
 
             Set<String> neighbors = Dictionary.getWordNeighbors(currentWord, visited);
@@ -49,6 +49,6 @@ public class UCS extends Algorithm {
             }
         }
 
-        return new Response("No path found", null, -1, totalNodesVisited);
+        return new Response("No path found", null, 0, totalNodesVisited, -1);
     }
 }
