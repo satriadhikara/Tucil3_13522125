@@ -9,18 +9,19 @@ public class Dictionary {
     static {
         try {
             words = loadWordsFromFile();
+            System.out.println("Dictionary loaded successfully.");
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error loading dictionary: " + e.getMessage());
         }
     }
 
     private static Set<String> loadWordsFromFile() throws Exception {
         Set<String> words = new HashSet<>();
         try {
-            File file = new File("src/main/resources/words_alpha.txt");
+            File file = new File("src/main/resources/words_oracle.txt");
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
-                String word = scanner.nextLine();
+                String word = scanner.nextLine().trim();
                 words.add(word);
             }
             scanner.close();
@@ -30,21 +31,32 @@ public class Dictionary {
         return words;
     }
 
-    public static List<String> getWordNeighbors(String word) {
-        List<String> neighbors = new ArrayList<>();
-        for (String w : words) {
-            if (isOneLetterDifferent(word, w)) {
-                neighbors.add(w);
+    public static Set<String> getWordNeighbors(String currentWord, Set<String> visited) {
+        Set<String> neighbors = new HashSet<>();
+        StringBuilder wordBuilder = new StringBuilder(currentWord);
+
+        for (int i = 0; i < wordBuilder.length(); i++) {
+            char originalChar = wordBuilder.charAt(i);
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (c != originalChar) {
+                    wordBuilder.setCharAt(i, c);
+                    String newWord = wordBuilder.toString();
+                    if (words.contains(newWord) && !visited.contains(newWord)) {
+                        neighbors.add(newWord);
+                    }
+                }
             }
+            wordBuilder.setCharAt(i, originalChar);
         }
+
         return neighbors;
     }
 
-    public static Boolean isWordExist(String word) {
+    public static boolean isWordExist(String word) {
         return words.contains(word);
     }
 
-    public static Boolean isOneLetterDifferent(String word1, String word2) {
+    public static boolean isOneLetterDifferent(String word1, String word2) {
         if (word1.length() != word2.length()) {
             return false;
         }

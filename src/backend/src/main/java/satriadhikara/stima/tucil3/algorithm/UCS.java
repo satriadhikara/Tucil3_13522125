@@ -8,34 +8,47 @@ import satriadhikara.stima.tucil3.helper.Dictionary;
 import java.util.*;
 
 public class UCS extends Algorithm {
+
     @Override
     public Response search(InputWord input) {
-        String startWord = input.startWord();
-        String targetWord = input.targetWord();
+        String start = input.startWord();
+        String end = input.targetWord();
 
-        PriorityQueue<Node> frontier = new PriorityQueue<>(Comparator.comparingInt(Node::cost));
-        Map<String, Integer> costSoFar = new HashMap<>();
+        Queue<Node> queue = new PriorityQueue<>(Comparator.comparingInt(Node::cost));
+        Set<String> visited = new HashSet<>();
+        queue.add(new Node(start, null, 0, 0));
+        visited.add(start);
 
-        frontier.add(new Node(startWord, null, 0, 0));
-        costSoFar.put(startWord, 0);
+        int totalNodesVisited = 0;
 
-        while (!frontier.isEmpty()) {
-            Node current = frontier.poll();
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+            String currentWord = current.word();
 
-            if (current.word().equals(targetWord)) {
-                return new Response("Path found", constructPath(current), 0);
+            totalNodesVisited++;
+
+            if (currentWord.equals(end)) {
+                List<String> path = new ArrayList<>();
+                int cost = -1;
+                while (current != null) {
+                    path.add(current.word());
+                    cost = current.cost();
+                    current = current.parent();
+                }
+                Collections.reverse(path);
+                return new Response("Path found", path, cost, totalNodesVisited);
             }
 
-            List<String> neighbors = Dictionary.getWordNeighbors(current.word());
+            Set<String> neighbors = Dictionary.getWordNeighbors(currentWord, visited);
             for (String neighbor : neighbors) {
                 int newCost = current.cost() + 1;
-                if (!costSoFar.containsKey(neighbor) || newCost < costSoFar.get(neighbor)) {
-                    costSoFar.put(neighbor, newCost);
-                    frontier.add(new Node(neighbor, current, newCost, 0));
+                if (!visited.contains(neighbor)) {
+                    queue.add(new Node(neighbor, current, newCost, 0));
+                    visited.add(neighbor);
                 }
             }
         }
 
-        return new Response("No path found", null, -1);
+        return new Response("No path found", null, -1, totalNodesVisited);
     }
 }

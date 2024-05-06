@@ -19,15 +19,17 @@ public class GreedyBestFirstSearch extends Algorithm {
         frontier.add(new Node(startWord, null, 0, getHeuristic(startWord, targetWord)));
         visited.add(startWord);
 
+        int totalNodesVisited = 0;
+
         while (!frontier.isEmpty()) {
             Node current = frontier.poll();
+            totalNodesVisited++;
 
             if (current.word().equals(targetWord)) {
-                return new Response("Path found", constructPath(current), 0);
+                return new Response("Path found", constructPath(current), 0, totalNodesVisited);
             }
 
-
-            List<String> neighbors = Dictionary.getWordNeighbors(current.word());
+            Set<String> neighbors = Dictionary.getWordNeighbors(current.word(), visited);
             for (String neighbor : neighbors) {
                 if (!visited.contains(neighbor)) {
                     visited.add(neighbor);
@@ -37,6 +39,6 @@ public class GreedyBestFirstSearch extends Algorithm {
             }
         }
 
-        return new Response("No path found", null, -1);
+        return new Response("No path found", null, -1, totalNodesVisited);
     }
 }
