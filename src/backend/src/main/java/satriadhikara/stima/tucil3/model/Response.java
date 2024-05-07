@@ -35,7 +35,7 @@ public class Response {
                 }
             }
             json.append("],");
-            json.append(",\"memoryUsed (KB)\":").append(memoryUsed);
+            json.append("\"memoryUsed (KB)\":").append(memoryUsed);
         }
         json.append(",\"executionTime\":").append(executionTime);
         json.append(",\"nodeVisited\":").append(nodeVisited);
@@ -48,4 +48,3 @@ public class Response {
         }
     }
 }
-

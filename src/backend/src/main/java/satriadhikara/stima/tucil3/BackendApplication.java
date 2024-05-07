@@ -9,6 +9,6 @@ public class BackendApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
-        Dictionary dictionary = new Dictionary(); // Load words from file
+        Dictionary dictionary = new Dictionary();
     }
 }
